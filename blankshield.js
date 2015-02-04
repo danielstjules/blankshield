@@ -1,24 +1,31 @@
 ;(function(root) {
   'use strict';
 
-  var blankshield = function(ele) {
-    addEvent(ele, 'click', function(e) {
-      var href, usedModifier, child;
+  var handler = function(e) {
+    var href, usedModifier, child;
 
-      href = e.target.getAttribute('href');
-      if (!href) return;
+    href = e.target.getAttribute('href');
+    if (!href) return;
 
-      usedModifier = (e.ctrlKey || e.shiftKey || e.metaKey);
-      if (!usedModifier && e.target.getAttribute('target') !== '_blank') {
-        return;
+    usedModifier = (e.ctrlKey || e.shiftKey || e.metaKey);
+    if (!usedModifier && e.target.getAttribute('target') !== '_blank') {
+      return;
+    }
+
+    child = window.open(href);
+    child.opener = null;
+
+    e.preventDefault();
+  };
+
+  var blankshield = function(target) {
+    if (typeof target.length === 'undefined') {
+      addEvent(target, 'click', handler);
+    } else if (typeof target !== 'string' && !(target instanceof String)) {
+      for (var i = 0; i < target.length; i++) {
+        addEvent(target[i], 'click', handler);
       }
-
-      child = window.open(href);
-      child.opener = null;
-
-      e.preventDefault();
-      return false;
-    });
+    }
   };
 
   function addEvent(target, type, listener) {
