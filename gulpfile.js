@@ -12,7 +12,7 @@ var banner = [
   ' * @link      <%= pkg.homepage %>',
   ' * @author    <%= pkg.author %>',
   ' * @license   <%= pkg.license %>',
-  ' */\n\n'
+  ' */\n'
 ].join('\n');
 
 var paths = {
