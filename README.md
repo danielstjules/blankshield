@@ -10,13 +10,13 @@ based phishing attacks that take advantage of _blank targets.
 
 ## Overview
 
-Tabs or windows opened using JavaScript or `target="blank"` have some limited
+Tabs or windows opened using JavaScript or `target="_blank"` have some limited
 access to the parent window, ignoring cross-origin restrictions. Among that
 is the ability to redirect the parent tab or window using
 `window.opener.location`.
 
 While it may seem harmless, a phishing attack is possible when web applications
-permit or make use of user-submitted anchors with `target="blank"` or
+permit or make use of user-submitted anchors with `target="_blank"` or
 `window.open()`. Consider the following scenario:
 
 You're an admin using some forum or chat web software. You're currently logged
@@ -42,9 +42,9 @@ open - what about existing tabs?
 
 A handful of solutions exist to prevent this sort of attack. You could:
 
-* Remove or disallow `target="blank"` for any anchors pointing to a
+* Remove or disallow `target="_blank"` for any anchors pointing to a
 different origin.
-* Append `rel="noreferrer"` to any links with `target="blank"`. When done,
+* Append `rel="noreferrer"` to any links with `target="_blank"`. When done,
   `window.opener` will be null from the child window. It's well supported among
   webkit-based browsers, though you'll fall short with IE and even newer
   releases of FireFox. And of course, it prevents sending the referrer in
@@ -101,5 +101,5 @@ blankshield(document.getElementById('some-anchor'));
 ## Caveats
 
 This library only helps make it easier to prevent reverse tabnabbing which takes
-advantage of `target="blank"`. However, it can't help with other elements
+advantage of `target="_blank"`. However, it can't help with other elements
 or behavior that calls, for example, `window.open()`.
