@@ -80,20 +80,17 @@ blankshield(document.getElementById('some-anchor'));
 // Array-like objects such as HTMLCollections
 blankshield(document.getElementsByClassName('user-submitted-link'));
 blankshield(document.getElementsByTagName('a'));
+blankshield(document.querySelectorAll('a[target=_blank]'));
 
 // As well as jQuery
 blankshield($('a[target=_blank]'));
-```
 
-Its effectiveness will depend on your integration.
-
-``` JavaScript
-// Don't bind listeners to the anchors that would stop event propagation.
-// In the example below, blankshield is not able to intercept the click
-// behavior.
+// But make sure not to bind listeners to the anchors that would stop event
+// propagation. In the example below, blankshield is not able to intercept the
+// click behavior.
 var anchor = document.getElementById('some-anchor')
 anchor.addEventListener('click', function(e) {
-   return e.stopImmediatePropagation();
+   e.stopImmediatePropagation();
 });
 blankshield(document.getElementById('some-anchor'));
 ```
