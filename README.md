@@ -5,7 +5,7 @@ based phishing attacks that take advantage of _blank targets.
 [Demo](http://danielstjules.github.io/blankshield/).
 
 * [Overview](#overview)
-* [Vulnerable browsers](#vulnerable-browser)
+* [Vulnerable browsers](#vulnerable-browsers)
 * [Solutions](#solutions)
 * [Installation](#installation)
 * [Caveats](#caveats)

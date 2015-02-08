@@ -2,7 +2,11 @@
   'use strict';
 
   var handler = function(e) {
-    var href, usedModifier, child;
+    var target, href, usedModifier, child;
+
+    // Use global event object for IE8 and below to get target
+    e = e || window.event;
+    target = e.target || e.srcElement;
 
     href = e.target.getAttribute('href');
     if (!href) return;
