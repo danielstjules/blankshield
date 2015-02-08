@@ -101,15 +101,15 @@
           not working. I'm seeing some errors in the console output. Can you
           please take a look by clicking on
           <a target="_blank" href="http://www.danielstjules.com/github/blankshield-example-attack.html">this link</a>…
-          which showcases reverse tabnabber phising. Or, if you'd prefer, please
-          <a id="protected" target="_blank" href="http://www.danielstjules.com/github/blankshield-example-attack.html">this link</a>
+          which showcases reverse tabnabber phising. Or, if you'd prefer,
+          <a id="protected" target="_blank" href="http://www.danielstjules.com/github/blankshield-example-attack.html">click here</a>
           to see how
           <a href="https://www.github.com/danielstjules/blankshield">blankshield</a>
           helps mitigate the attack.
         </p>
         <hr>
         <p class="explanation">
-          The first link above is vulnerable to
+          The first link in the post above is vulnerable to
           <a href="https://sites.google.com/site/bughunteruniversity/nonvuln/phishing-with-window-opener">reverse tabnabbing</a>
           since it uses target="_blank". Try clicking the link normally, or
           with a modifier key (shift, meta, etc), but without using a right
@@ -117,7 +117,9 @@
           redirect to a fake attacker's "phising page". The new tab is able to
           redirect this page using window.opener.location. The second link,
           however, is protected by using blankshield(), the function provided
-          by this library.
+          by <a href="https://www.github.com/danielstjules/blankshield">this library</a>.
+          This is all just a small demo of a potential attack on a bug tracking
+          app, to help convey its impact.
         </p>
       </div>
     </div>
