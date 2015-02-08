@@ -2,6 +2,7 @@
 
 Prevent [reverse tabnabbing](https://sites.google.com/site/bughunteruniversity/nonvuln/phishing-with-window-opener)
 based phishing attacks that take advantage of _blank targets.
+[Demo](http://danielstjules.github.io/blankshield/).
 
 * [Overview](#overview)
 * [Solutions](#solutions)
