@@ -5,6 +5,7 @@ based phishing attacks that take advantage of _blank targets.
 [Demo](http://danielstjules.github.io/blankshield/).
 
 * [Overview](#overview)
+* [Vulnerable browsers](#vulnerable-browser)
 * [Solutions](#solutions)
 * [Installation](#installation)
 * [Caveats](#caveats)
@@ -38,6 +39,19 @@ credentials to log back in.
 Is there a chance you might not check the URL? That you didn't notice the tab
 icon refresh? While many are suspicious of links they click and new tabs they
 open - what about existing tabs?
+
+## Vulnerable browsers
+
+The following browsers are confirmed to be vulnerable against reverse tabnabbing
+phishing attacks:
+
+| Browser    | Click | Shift + click | Meta/Ctrl + click |
+|------------|-------|---------------|-------------------|
+| Chrome 40  | x     | x             | x                 |
+| Firefox 34 |       |               |                   |
+| Opera 26   | x     | x             | x                 |
+| Safari 7   | x     |               |                   |
+| IE8...11   | Depends on security zones                 |
 
 ## Solutions
 
