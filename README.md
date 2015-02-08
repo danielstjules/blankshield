@@ -45,13 +45,42 @@ open - what about existing tabs?
 The following browsers are confirmed to be vulnerable against reverse tabnabbing
 phishing attacks:
 
-| Browser    | Click | Shift + click | Meta/Ctrl + click |
-|------------|-------|---------------|-------------------|
-| Chrome 40  | x     | x             | x                 |
-| Firefox 34 |       |               |                   |
-| Opera 26   | x     | x             | x                 |
-| Safari 7   | x     |               |                   |
-| IE8...11   | Depends on security zones                 |
+<table>
+  <tr>
+    <td>Browser</td>
+    <td>Click</td>
+    <td>Shift + click</td>
+    <td>Meta/Ctrl + click</td>
+  </tr>
+  <tr>
+    <td>Chrome 40</td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td>Firefox 34</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Opera 26</td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td>Safari 7</td>
+    <td>x</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>IE8...11</td>
+    <td colspan="3">Depends on security zones</td>
+  </tr>
+</table>
 
 ## Solutions
 
