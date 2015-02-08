@@ -153,14 +153,14 @@
   </div>
   <script>
   /**
-   * blankshield - Prevent reverse tabnabbing-based phising attacks caused by _blank
+   * blankshield - Prevent reverse tabnabbing-based phishing attacks caused by _blank
    *
-   * @version   0.0.1
+   * @version   0.0.2
    * @link      https://github.com/danielstjules/blankshield
    * @author    Daniel St. Jules <danielst.jules@gmail.com>
    * @license   MIT
    */
-  !function(e){"use strict";function t(e,t,n){e.addEventListener?e.addEventListener(t,n,!1):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}var n=function(e){var t,n,i;t=e.target.getAttribute("href"),t&&(n=e.ctrlKey||e.shiftKey||e.metaKey,(n||"_blank"===e.target.getAttribute("target"))&&(i=window.open(t),i.opener=null,e.preventDefault()))},i=function(e){if("undefined"==typeof e.length)t(e,"click",n);else if("string"!=typeof e&&!(e instanceof String))for(var i=0;i<e.length;i++)t(e[i],"click",n)};"undefined"!=typeof exports&&("undefined"!=typeof module&&module.exports?module.exports=i:exports.blankshield=i),"function"==typeof define&&"object"==typeof define.amd&&define.amd&&define("blankshield",[],function(){return i}),e.blankshield=i}(this);
+  !function(e){"use strict";function t(e,t,n){e.addEventListener?e.addEventListener(t,n,!1):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}var n=function(e){var t,n,i,o;e=e||window.event,t=e.target||e.srcElement,n=e.target.getAttribute("href"),n&&(i=e.ctrlKey||e.shiftKey||e.metaKey,(i||"_blank"===e.target.getAttribute("target"))&&(o=window.open(n),o.opener=null,e.preventDefault()))},i=function(e){if("undefined"==typeof e.length)t(e,"click",n);else if("string"!=typeof e&&!(e instanceof String))for(var i=0;i<e.length;i++)t(e[i],"click",n)};"undefined"!=typeof exports&&("undefined"!=typeof module&&module.exports?module.exports=i:exports.blankshield=i),"function"==typeof define&&"object"==typeof define.amd&&define.amd&&define("blankshield",[],function(){return i}),e.blankshield=i}(this);
   </script>
   <script>
     blankshield(document.getElementById('protected'));
