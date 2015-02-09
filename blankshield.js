@@ -1,7 +1,16 @@
 ;(function(root) {
   'use strict';
 
-  var handler = function(e) {
+  /**
+   * An event listener that can be attached to a click event to protect against
+   * reverse tabnabbing. It retrieves the target anchors href, and if the link
+   * was intended to open in a new tab or window, the browser's default
+   * behaviour is canceled. Instead, the destination url is opened using
+   * "window.open", followed by setting its window.opener property to null.
+   *
+   * @param {Event} e The click event for a given anchor
+   */
+  var clickListener = function(e) {
     var target, href, usedModifier, child;
 
     // Use global event object for IE8 and below to get target
@@ -29,20 +38,39 @@
     }
   };
 
+  /**
+   * blankshield is the function exported by the library. It accepts an anchor
+   * element or array of elements, adding an event listener to each to help
+   * mitigate a potential reverse tabnabber attack. For performance, any
+   * supplied object with a length attribute is assumed to be an array. As a
+   * result, the function is not compatible with elements resembling:
+   * `<a href="example.com" length="2">example</a>` I'd imagine this is quite
+   * the edge case, and an acceptable trade-off.
+   *
+   * @param {HTMLAnchorElement|HTMLAnchorElement[]} target
+   */
   var blankshield = function(target) {
     if (typeof target.length === 'undefined') {
-      addEvent(target, 'click', handler);
+      addEventListener(target, 'click', clickListener);
     } else if (typeof target !== 'string' && !(target instanceof String)) {
       for (var i = 0; i < target.length; i++) {
-        addEvent(target[i], 'click', handler);
+        addEventListener(target[i], 'click', clickListener);
       }
     }
   };
 
-  function addEvent(target, type, listener) {
+  /**
+   * A cross-browser addEventListener function that adds a listener for the
+   * supplied event type to the specified target.
+   *
+   * @param {object}   target
+   * @param {string}   type
+   * @param {function} listener
+   */
+  function addEventListener(target, type, listener) {
     // Modern browsers
-    if (target.addEventListener) {
-      return target.addEventListener(type, listener, false);
+    if (target.addEventListenerListener) {
+      return target.addEventListenerListener(type, listener, false);
     }
 
     // Older browsers
@@ -74,7 +102,7 @@
   }
 
   // Register with AMD
-  if (typeof define == 'function' && typeof define.amd == 'object' && define.amd) {
+  if (typeof define == 'function' && typeof define.amd == 'object') {
     define('blankshield', [], function() {
       return blankshield;
     });

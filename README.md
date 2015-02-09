@@ -21,7 +21,7 @@ While it may seem harmless, a phishing attack is possible when web applications
 permit or make use of user-submitted anchors with `target="_blank"` or
 `window.open()`. Consider the following scenario:
 
-You're an admin using some forum or chat web software. You're currently logged
+You're an admin using some forum or chat software. You're currently logged
 into the app, and view a message left by a user. The user asks or convinces
 you to click a link in his message, which opens in a new tab. While the new
 page may look completely safe - perhaps just a screenshot or bug report in some
@@ -42,8 +42,7 @@ open - what about existing tabs?
 
 ## Vulnerable browsers
 
-The following browsers are confirmed to be vulnerable against reverse tabnabbing
-phishing attacks:
+The following table outlines the scope of affected browsers:
 
 <table>
   <tr>
@@ -87,7 +86,7 @@ phishing attacks:
 A handful of solutions exist to prevent this sort of attack. You could:
 
 * Remove or disallow `target="_blank"` for any anchors pointing to a
-different origin.
+  different origin.
 * Append `rel="noreferrer"` to any links with `target="_blank"`. When done,
   `window.opener` will be null from the child window. It's well supported among
   webkit-based browsers, though you'll fall short with IE and even newer
@@ -142,5 +141,6 @@ blankshield(document.getElementById('some-anchor'));
 ## Caveats
 
 This library only helps make it easier to prevent reverse tabnabbing which takes
-advantage of `target="_blank"`. However, it can't help with other elements
-or behavior that calls, for example, `window.open()`.
+advantage of `target="_blank"`. However, it doesn't help with other elements
+or behavior that calls, for example, `window.open()`. Or anchors that use a
+target other than _blank.
