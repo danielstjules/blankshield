@@ -1,7 +1,7 @@
 {
   "name": "blankshield",
-  "version": "0.0.2",
-  "description": "Prevent reverse tabnabbing-based phishing attacks caused by _blank",
+  "version": "0.0.3",
+  "description": "Prevent reverse tabnabbing phishing attacks caused by _blank",
   "keywords": [
     "prevent",
     "reverse",

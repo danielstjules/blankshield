@@ -8,18 +8,25 @@
     e = e || window.event;
     target = e.target || e.srcElement;
 
-    href = e.target.getAttribute('href');
+    // Ignore anchors without an href
+    href = target.getAttribute('href');
     if (!href) return;
 
+    // Ignore anchors without a blank target or modifier key
     usedModifier = (e.ctrlKey || e.shiftKey || e.metaKey);
-    if (!usedModifier && e.target.getAttribute('target') !== '_blank') {
+    if (!usedModifier && target.getAttribute('target') !== '_blank') {
       return;
     }
 
     child = window.open(href);
     child.opener = null;
 
-    e.preventDefault();
+    // IE8 and below don't support preventDefault
+    if (e.preventDefault) {
+      e.preventDefault();
+    } else {
+      e.returnValue = false;
+    }
   };
 
   var blankshield = function(target) {
@@ -33,12 +40,23 @@
   };
 
   function addEvent(target, type, listener) {
+    // Modern browsers
     if (target.addEventListener) {
-      target.addEventListener(type, listener, false);
-    } else if (target.attachEvent) {
-      target.attachEvent('on' + type, listener);
+      return target.addEventListener(type, listener, false);
+    }
+
+    // Older browsers
+    var onType = 'on' + type;
+    if (target.attachEvent) {
+      target.attachEvent(onType, listener);
+    } else if (target[onType]) {
+      prevListener = target[onType];
+      target[onType] = function() {
+        listener();
+        prevListener();
+      };
     } else {
-      target['on' + type] = listener;
+      target[onType] = listener;
     }
   }
 
