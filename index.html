@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>blankshield demo - Phishing with fake bug tracker</title>
+  <title>blankshield &amp; Reverse tabnabbing attacks</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
 
@@ -20,6 +20,17 @@
     h2 {
       font-size: 2.0rem;
       color: #666;
+    }
+    .bar {
+      border: 0;
+      border-radius: 0;
+      height: auto;
+      white-space: normal;
+      line-height: 28px;
+      width: 100%;
+      display: block;
+      margin-bottom: 0;
+      padding: 15px 30px;
     }
     .columns {
       border-radius: 4px;
@@ -45,7 +56,7 @@
       margin-bottom: 0;
     }
     .post {
-      padding-top: 10px;
+      padding-top: 0px;
       text-align: left;
       font-size: 1.2rem;
     }
@@ -75,6 +86,11 @@
   </style>
 </head>
 <body>
+  <a id="brief" class="bar button button-primary" target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">
+    This is a fake static HTML bug tracker setup to visualize how users may be
+    vulnerable to a reverse tabnabbing attack. To skip the fluff, click on this
+    bar to see an example of its execution. Or scroll to the bottom to read more.
+  </a>
   <div class="container">
     <div class="row">
       <div class="six columns nav">
@@ -86,7 +102,7 @@
         You are logged in as Admin
       </div>
     </div>
-    <h1>blankshield demo - Phishing with fake bug tracker</h1>
+    <h1>blankshield &amp; Reverse tabnabbing attacks</h1>
     <div class="row">
       <div class="three columns profile">
         <b>Daniel St. Jules</b>
@@ -96,17 +112,19 @@
         </p>
       </div>
       <div class="nine columns post">
-        <h2>Snippet not loading</h2>
+        <h2>A dummy bug report vulnerable to the attack</h2>
         <p>
-          Hi! I've tried loading the application snippet on my website but it's
-          not working. I'm seeing some errors in the console output. Can you
-          please take a look by clicking on
-          <a target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">this link</a>…
-          which showcases reverse tabnabbing phishing. Or, if you'd prefer,
-          <a id="protected" target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">click here</a>
-          to see that
+          This is not a real issue tracker. But in this scenario, a user is
+          requesting that you visit some page in hopes of acquiring your
+          credentials. Unlike other phishing attacks, the opened link is not
+          the final destination. To see how, click
+          <a target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">this link</a>
+          without using a modifier key or context menu. After being opened in a
+          new tab due to its use of target="_blank", it will redirect this page.
           <a href="https://www.github.com/danielstjules/blankshield">blankshield</a>
-          helps mitigate the attack.
+          is a JavaScript library that helps mitigate the attack. For example,
+          <a id="protected" target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">clicking here</a>
+          will not cause this tab to redirect, and is thus not vulnerable.
         </p>
       </div>
     </div>
@@ -195,6 +213,9 @@
       </div>
     </form>
   </div>
+  <a class="bar button button-primary" href="http://www.github.com/danielstjules/blankshield">
+    Click here to check out blankshield on GitHub and prevent this sort of attack
+  </a>
   <script>
   /**
    * blankshield - Prevent reverse tabnabbing phishing attacks caused by _blank
@@ -207,6 +228,22 @@
   !function(e){"use strict";function t(e,t,n){if(e.addEventListenerListener)return e.addEventListenerListener(t,n,!1);var i="on"+t;e.attachEvent?e.attachEvent(i,n):e[i]?(prevListener=e[i],e[i]=function(){n(),prevListener()}):e[i]=n}var n=function(e){var t,n,i,r;e=e||window.event,t=e.target||e.srcElement,n=t.getAttribute("href"),n&&(i=e.ctrlKey||e.shiftKey||e.metaKey,(i||"_blank"===t.getAttribute("target"))&&(r=window.open(n),r.opener=null,e.preventDefault?e.preventDefault():e.returnValue=!1))},i=function(e){if("undefined"==typeof e.length)t(e,"click",n);else if("string"!=typeof e&&!(e instanceof String))for(var i=0;i<e.length;i++)t(e[i],"click",n)};"undefined"!=typeof exports&&("undefined"!=typeof module&&module.exports?module.exports=i:exports.blankshield=i),"function"==typeof define&&"object"==typeof define.amd&&define("blankshield",[],function(){return i}),e.blankshield=i}(this);
   </script>
   <script>
+    function isFF() {
+      return navigator.userAgent.toLowerCase().indexOf('firefox') !== -1;
+    }
+
+    function isIE() {
+      return navigator.userAgent.indexOf('MSIE ') !== -1;
+    }
+
+    if (isFF() || isIE()) {
+      var brief = document.getElementById('brief');
+      document.getElementById('brief').innerHTML = "You are not using a " +
+        "vulnerable browser. Scroll down to learn more about the attack, or " +
+        "click here to go to the GitHub page";
+      brief.setAttribute("href", "http://www.github.com/danielstjules/blankshield");
+    }
+
     blankshield(document.getElementById('protected'));
   </script>
 </body>
