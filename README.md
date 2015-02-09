@@ -2,7 +2,9 @@
 
 Prevent [reverse tabnabbing](https://sites.google.com/site/bughunteruniversity/nonvuln/phishing-with-window-opener)
 based phishing attacks that take advantage of _blank targets.
-[Demo](http://danielstjules.github.io/blankshield/).
+[Demo](http://danielstjules.github.io/blankshield/). The library has been tested
+and is compatible with the latest versions of Chrome, Firefox, Safari, Opera,
+as well as IE6-11.
 
 * [Overview](#overview)
 * [Vulnerable browsers](#vulnerable-browsers)
@@ -76,10 +78,13 @@ The following table outlines the scope of affected browsers:
     <td></td>
   </tr>
   <tr>
-    <td>IE8...11</td>
-    <td colspan="3">Depends on security zones</td>
+    <td>IE6...11</td>
+    <td colspan="3"><sup>[1]</sup></td>
   </tr>
 </table>
+
+<sup>[1]</sup> IE is not vulnerable to the attack by default. However, this can
+change depending on security zone settings.
 
 ## Solutions
 
