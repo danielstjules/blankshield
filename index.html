@@ -50,6 +50,7 @@
       font-size: 1.2rem;
     }
     .explanation {
+      font-size: 1.2rem;
       color: #999;
     }
     form .columns {
@@ -107,20 +108,6 @@
           <a href="https://www.github.com/danielstjules/blankshield">blankshield</a>
           helps mitigate the attack.
         </p>
-        <hr>
-        <p class="explanation">
-          The first link in the post above is vulnerable to
-          <a href="https://sites.google.com/site/bughunteruniversity/nonvuln/phishing-with-window-opener">reverse tabnabbing</a>
-          since it uses target="_blank". Try clicking the link normally, or
-          with a modifier key (shift, meta, etc), but without using a right
-          click context menu. You'll be taken to a new tab, and this page will
-          redirect to a fake attacker's "phishing page". The new tab is able to
-          redirect this page using window.opener.location. The second link,
-          however, is protected by using blankshield(), the function provided
-          by <a href="https://www.github.com/danielstjules/blankshield">this library</a>.
-          This is all just a small demo of a potential attack on a bug tracking
-          app, to help convey its impact.
-        </p>
       </div>
     </div>
     <form>
@@ -147,6 +134,61 @@
           <label for="exampleMessage">Message</label>
           <textarea class="u-full-width" placeholder="Hi Daniel …" id="exampleMessage"></textarea>
           <input class="button-primary" type="submit" value="Submit">
+          <hr>
+          <p class="explanation">
+            The first link in the post above is vulnerable to
+            <a href="https://sites.google.com/site/bughunteruniversity/nonvuln/phishing-with-window-opener">reverse tabnabbing</a>
+            since it uses target="_blank". Try clicking the link normally, or
+            with a modifier key (shift, meta, etc), but without using a right
+            click context menu. You'll be taken to a new tab, and this page will
+            redirect to a fake attacker's "phishing page". The new tab is able to
+            redirect this page using window.opener.location. The second link,
+            however, is protected by using blankshield(), the function provided
+            by <a href="https://www.github.com/danielstjules/blankshield">this library</a>.
+            This is all just a small demo of a potential attack on a bug tracking
+            app, to help convey its impact.
+          </p>
+          <p class="explanation">
+            The following browsers are confirmed to be vulnerable against
+            reverse tabnabbing phishing attacks:
+          </p>
+
+          <table class="explanation">
+            <tr>
+              <td>Browser</td>
+              <td>Click</td>
+              <td>Shift + click</td>
+              <td>Meta/Ctrl + click</td>
+            </tr>
+            <tr>
+              <td>Chrome 40</td>
+              <td>x</td>
+              <td>x</td>
+              <td>x</td>
+            </tr>
+            <tr>
+              <td>Firefox 34</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Opera 26</td>
+              <td>x</td>
+              <td>x</td>
+              <td>x</td>
+            </tr>
+            <tr>
+              <td>Safari 7</td>
+              <td>x</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>IE8...11</td>
+              <td colspan="3">Depends on security zones</td>
+            </tr>
+          </table>
         </div>
       </div>
     </form>
