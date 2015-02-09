@@ -41,11 +41,11 @@
   /**
    * blankshield is the function exported by the library. It accepts an anchor
    * element or array of elements, adding an event listener to each to help
-   * mitigate a potential reverse tabnabber attack. For performance, any
+   * mitigate a potential reverse tabnabbing attack. For performance, any
    * supplied object with a length attribute is assumed to be an array. As a
-   * result, the function is not compatible with elements resembling:
-   * `<a href="example.com" length="2">example</a>` I'd imagine this is quite
-   * the edge case, and an acceptable trade-off.
+   * result, the function is not compatible with HTMLAnchorElements that have
+   * had a length property added. I'd imagine this is quite the edge case, and
+   * an acceptable trade-off.
    *
    * @param {HTMLAnchorElement|HTMLAnchorElement[]} target
    */
