@@ -128,6 +128,12 @@
           <a href="https://github.com/danielstjules/blankshield#usage">blankshield()</a>,
           the function provided by this library.
         </p>
+
+        <p>Why is this harmful? Because
+          neither the linked-to page, nor the phishing page lie on the same domain
+          or origin as this GitHub page. The site doesn't need to be compromised.
+          It just needs to allow user-submitted anchors with target="_blank".
+        </p>
         <p>
           The following table outlines the scope of affected browsers:
         </p>
@@ -210,8 +216,8 @@
           <a target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">this link</a>
           without using a modifier key or context menu. After being opened in a
           new tab due to its use of target="_blank", it will redirect this page.
-          <a href="https://www.github.com/danielstjules/blankshield">blankshield</a>
-          is a JavaScript library that helps mitigate the attack. For example,
+          But using
+          <a href="https://www.github.com/danielstjules/blankshield">blankshield</a>,
           <a class="safe" target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">clicking here</a>
           will not cause this tab to redirect.
         </p>
