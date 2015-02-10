@@ -87,11 +87,74 @@
 </head>
 <body>
   <a id="brief" class="bar button button-primary" target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">
-    This is a fake static HTML bug tracker setup to visualize how users may be
-    vulnerable to a reverse tabnabbing attack. To skip the fluff, click on this
-    bar to see an example of its execution. Or scroll to the bottom to read more.
+    This demo contains a fake static HTML bug tracker setup to visualize how
+    users may be vulnerable to a reverse tabnabbing attack. Click on this bar
+    to see an example of its execution and skip the overview.
   </a>
   <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <p class="explanation">
+          The first link in the example post below is vulnerable to
+          <a href="https://sites.google.com/site/bughunteruniversity/nonvuln/phishing-with-window-opener">reverse tabnabbing</a>
+          since it uses target="_blank". Try clicking the link normally, or
+          with a modifier key (shift, meta, etc), but without using a right
+          click context menu. You'll be taken to a new tab, and this page will
+          redirect to a fake attacker's "phishing page". The new tab is able to
+          redirect this page using window.opener.location. The second link,
+          however, is protected by using
+          <a href="https://github.com/danielstjules/blankshield#usage">blankshield()</a>,
+          the function provided by this library. This is all just a small demo
+          of a potential attack on a bug tracking app, to help convey its impact,
+          and show how it differs from tabnabbing or other more typical phishing
+          attacks.
+        </p>
+        <p class="explanation">
+          The following table outlines the scope of affected browsers:
+        </p>
+
+        <table class="explanation">
+          <tr>
+            <td>Browser</td>
+            <td>Click</td>
+            <td>Shift + click</td>
+            <td>Meta/Ctrl + click</td>
+          </tr>
+          <tr>
+            <td>Chrome 40</td>
+            <td>x</td>
+            <td>x</td>
+            <td>x</td>
+          </tr>
+          <tr>
+            <td>Firefox 34</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Opera 26</td>
+            <td>x</td>
+            <td>x</td>
+            <td>x</td>
+          </tr>
+          <tr>
+            <td>Safari 7</td>
+            <td>x</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>IE6...11</td>
+            <td colspan="3"><sup>[1]</sup></td>
+          </tr>
+        </table>
+
+        <sup>[1]</sup> IE is not vulnerable to the attack by default. However,
+        this can change depending on security zone settings.
+        <hr>
+      </div>
+    </div>
     <div class="row">
       <div class="six columns nav">
         <a href="http://www.github.com/danielstjules/blankshield">Dashboard</a> |
@@ -131,11 +194,11 @@
     <form>
       <div class="row">
         <div class="six columns">
-          <label for="modify">Set priority</label>
-          <select class="u-full-width" id="modify">
+          <label for="priority">Set priority</label>
+          <select class="u-full-width" id="priority">
             <option value="low">Low</option>
             <option value="normal">Normal</option>
-            <option value="high" selected="true">High</option>
+            <option value="high" selected="selected">High</option>
           </select>
         </div>
         <div class="six columns">
@@ -152,63 +215,6 @@
           <label for="exampleMessage">Message</label>
           <textarea class="u-full-width" placeholder="Hi Daniel …" id="exampleMessage"></textarea>
           <input class="button-primary" type="submit" value="Submit">
-          <hr>
-          <p class="explanation">
-            The first link in the post above is vulnerable to
-            <a href="https://sites.google.com/site/bughunteruniversity/nonvuln/phishing-with-window-opener">reverse tabnabbing</a>
-            since it uses target="_blank". Try clicking the link normally, or
-            with a modifier key (shift, meta, etc), but without using a right
-            click context menu. You'll be taken to a new tab, and this page will
-            redirect to a fake attacker's "phishing page". The new tab is able to
-            redirect this page using window.opener.location. The second link,
-            however, is protected by using blankshield(), the function provided
-            by <a href="https://www.github.com/danielstjules/blankshield">this library</a>.
-            This is all just a small demo of a potential attack on a bug tracking
-            app, to help convey its impact.
-          </p>
-          <p class="explanation">
-            The following table outlines the scope of affected browsers:
-          </p>
-
-          <table class="explanation">
-            <tr>
-              <td>Browser</td>
-              <td>Click</td>
-              <td>Shift + click</td>
-              <td>Meta/Ctrl + click</td>
-            </tr>
-            <tr>
-              <td>Chrome 40</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-            </tr>
-            <tr>
-              <td>Firefox 34</td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Opera 26</td>
-              <td>x</td>
-              <td>x</td>
-              <td>x</td>
-            </tr>
-            <tr>
-              <td>Safari 7</td>
-              <td>x</td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>IE6...11</td>
-              <td colspan="3"><sup>[1]</sup></td>
-            </tr>
-          </table>
-
-          <sup>[1]</sup> IE is not vulnerable to the attack by default. However,
-          this can change depending on security zone settings.
         </div>
       </div>
     </form>
