@@ -12,14 +12,24 @@
 
     /* Custom styles */
     h1 {
+      padding-top: 30px;
+      text-align: center;
+      font-size: 3.2rem;
+    }
+    h2 {
       text-transform: uppercase;
       font-size: 3.0rem;
       text-align: center;
       padding-bottom: 20px;
     }
-    h2 {
+    h3 {
       font-size: 2.0rem;
       color: #666;
+    }
+    .button.centered {
+      display: block;
+      margin: 0 auto;
+      width: 70%;
     }
     .bar {
       border: 0;
@@ -60,9 +70,9 @@
       text-align: left;
       font-size: 1.2rem;
     }
-    .explanation {
+    .explanation, .explanation p, .explanation table {
       font-size: 1.2rem;
-      color: #999;
+      color: #555;
     }
     form .columns {
       padding: 0;
@@ -86,16 +96,28 @@
   </style>
 </head>
 <body>
-  <a id="brief" class="bar button button-primary" target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">
-    This demo contains a fake static HTML bug tracker setup to visualize how
-    users may be vulnerable to a reverse tabnabbing attack. Click on this bar
-    to see an example of its execution and skip the overview.
-  </a>
+  <a href="https://github.com/danielstjules/blankshield"><img style="position: absolute; top: 0; right: 0; border: 0;"
+    src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67"
+    alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+
   <div class="container">
     <div class="row">
       <div class="twelve columns">
-        <p class="explanation">
-          The first link in the example post below is vulnerable to
+        <h1>blankshield &amp; reverse tabnabbing attacks</h1>
+      </div>
+    </div>
+    <div clas="row">
+      <div class="six columns">
+        <a class="button button-primary centered" target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">Not Safe</a>
+      </div>
+      <div class="six columns">
+        <a class="safe button button-primary centered" target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">Safe</a>
+      </div>
+    </div>
+    <div class="row explanation">
+      <div class="twelve columns">
+        <p>
+          The first link above is vulnerable to
           <a href="https://sites.google.com/site/bughunteruniversity/nonvuln/phishing-with-window-opener">reverse tabnabbing</a>
           since it uses target="_blank". Try clicking the link normally, or
           with a modifier key (shift, meta, etc), but without using a right
@@ -104,16 +126,13 @@
           redirect this page using window.opener.location. The second link,
           however, is protected by using
           <a href="https://github.com/danielstjules/blankshield#usage">blankshield()</a>,
-          the function provided by this library. This is all just a small demo
-          of a potential attack on a bug tracking app, to help convey its impact,
-          and show how it differs from tabnabbing or other more typical phishing
-          attacks.
+          the function provided by this library.
         </p>
-        <p class="explanation">
+        <p>
           The following table outlines the scope of affected browsers:
         </p>
 
-        <table class="explanation">
+        <table>
           <tr>
             <td>Browser</td>
             <td>Click</td>
@@ -155,6 +174,13 @@
         <hr>
       </div>
     </div>
+  </div>
+  <a id="brief" class="bar button button-primary" href="#bugtracker">
+    This demo contains a fake static HTML bug tracker to help visualize
+    the attack.
+  </a>
+  </div>
+  <div class="container" id="bugtracker" name="bugtracker">
     <div class="row">
       <div class="six columns nav">
         <a href="http://www.github.com/danielstjules/blankshield">Dashboard</a> |
@@ -165,7 +191,7 @@
         You are logged in as Admin
       </div>
     </div>
-    <h1>blankshield &amp; Reverse tabnabbing attacks</h1>
+    <h2>Fake bug tracker</h2>
     <div class="row">
       <div class="three columns profile">
         <b>Daniel St. Jules</b>
@@ -175,7 +201,7 @@
         </p>
       </div>
       <div class="nine columns post">
-        <h2>A dummy bug report vulnerable to the attack</h2>
+        <h3>A dummy bug report vulnerable to the attack</h3>
         <p>
           This is not a real issue tracker. But in this scenario, a user is
           requesting that you visit some page in hopes of acquiring your
@@ -186,8 +212,8 @@
           new tab due to its use of target="_blank", it will redirect this page.
           <a href="https://www.github.com/danielstjules/blankshield">blankshield</a>
           is a JavaScript library that helps mitigate the attack. For example,
-          <a id="protected" target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">clicking here</a>
-          will not cause this tab to redirect, and is thus not vulnerable.
+          <a class="safe" target="_blank" href="http://www.danielstjules.com/github/blankshield-demo-attack.html">clicking here</a>
+          will not cause this tab to redirect.
         </p>
       </div>
     </div>
@@ -250,7 +276,7 @@
       brief.setAttribute("href", "http://www.github.com/danielstjules/blankshield");
     }
 
-    blankshield(document.getElementById('protected'));
+    blankshield(document.getElementsByClassName('safe'));
   </script>
 </body>
 </html>
