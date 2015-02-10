@@ -26,6 +26,10 @@
       font-size: 2.0rem;
       color: #666;
     }
+    .notvuln {
+      text-align: center;
+      font-size: 1.2rem;
+    }
     .button.centered {
       display: block;
       margin: 0 auto;
@@ -102,7 +106,7 @@
 
   <div class="container">
     <div class="row">
-      <div class="twelve columns">
+      <div class="twelve columns" id="header">
         <h1>blankshield &amp; reverse tabnabbing attacks</h1>
       </div>
     </div>
@@ -275,11 +279,12 @@
     }
 
     if (isFF() || isIE()) {
-      var brief = document.getElementById('brief');
-      document.getElementById('brief').innerHTML = "You are not using a " +
+      var brief = document.getElementById('header');
+      document.getElementById('header').innerHTML = "<h1>blankshield &amp; " +
+        "reverse tabnabbing attacks</h1><p class=\"notvuln\">You are not using a " +
         "vulnerable browser. Scroll down to learn more about the attack, or " +
-        "click here to go to the GitHub page";
-      brief.setAttribute("href", "http://www.github.com/danielstjules/blankshield");
+        "<a href=\"http://www.github.com/danielstjules/blankshield\">click here</a>" +
+        " to go to the GitHub page</p>";
     }
 
     blankshield(document.getElementsByClassName('safe'));
