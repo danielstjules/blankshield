@@ -69,8 +69,8 @@
    */
   function addEventListener(target, type, listener) {
     // Modern browsers
-    if (target.addEventListenerListener) {
-      return target.addEventListenerListener(type, listener, false);
+    if (target.addEventListener) {
+      return target.addEventListener(type, listener, false);
     }
 
     // Older browsers
