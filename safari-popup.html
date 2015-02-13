@@ -1,0 +1,17 @@
+<html>
+<head>
+  <title>Test Safari</title>
+</head>
+<body>
+View console logs
+<script>
+  console.log(window.opener !== null);
+  console.log(Date.now(), 'Tab opened');
+  console.log(window.opener !== null);
+  setTimeout(function() {
+  console.log(Date.now(), '2 seconds later');
+  console.log(window.opener !== null);
+  }, 2000)
+</script>
+</body>
+</html>
