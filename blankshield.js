@@ -2,6 +2,13 @@
   'use strict';
 
   /**
+   * Cached origin of the page.
+   *
+   * @var {string}
+   */
+  var origin = getOrigin(window.location);
+
+  /**
    * Lowercase copy of the userAgent.
    *
    * @var {string}
@@ -44,9 +51,8 @@
 
     // Safari prevents modification of the opener attribute of a tab if it lies
     // on a different origin, though the tab can still access
-    // window.opener.location. In that scenario, we open the link in the same
-    // tab. We also avoid caching the origin to accommodate push states.
-    if (isSafari && getOrigin(window.location) !== getOrigin(href)) {
+    // window.opener.location. In that scenario, we use the same tab.
+    if (isSafari && origin !== getOrigin(href)) {
       window.location = href;
     } else {
       child = window.open(href);
