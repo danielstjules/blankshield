@@ -72,7 +72,7 @@ The following table outlines the scope of affected browsers:
     <td>x</td>
   </tr>
   <tr>
-    <td>Safari 7</td>
+    <td>Safari 7, 8</td>
     <td>x</td>
     <td></td>
     <td></td>
@@ -149,3 +149,9 @@ This library only helps make it easier to prevent reverse tabnabbing which takes
 advantage of `target="_blank"`. However, it doesn't help with other elements
 or behavior that calls, for example, `window.open()`. Or anchors that use a
 target other than _blank.
+
+For Safari users, the href is opened in the existing tab if it lies on a
+different origin from the page. This is because Safari's cross-origin security
+prevents the modification of window.opener of a child window, yet still allows
+the child window to access window.opener.location. `rel="noreferrer"` also
+does not prevent the attack.
