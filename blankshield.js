@@ -2,6 +2,21 @@
   'use strict';
 
   /**
+   * Lowercase copy of the userAgent.
+   *
+   * @var {string}
+   */
+  var userAgent = navigator.userAgent.toLowerCase();
+
+  /**
+   * Whether or not the browser is Safari.
+   *
+   * @var {boolean}
+   */
+  var isSafari = (userAgent.indexOf('safari') !== -1 &&
+                  userAgent.indexOf('chrome') === -1);
+
+  /**
    * An event listener that can be attached to a click event to protect against
    * reverse tabnabbing. It retrieves the target anchors href, and if the link
    * was intended to open in a new tab or window, the browser's default
@@ -11,7 +26,7 @@
    * @param {Event} e The click event for a given anchor
    */
   var clickListener = function(e) {
-    var target, href, usedModifier, child;
+    var target, href, usedModifier, child, origin;
 
     // Use global event object for IE8 and below to get target
     e = e || window.event;
@@ -27,8 +42,16 @@
       return;
     }
 
-    child = window.open(href);
-    child.opener = null;
+    // Safari prevents modification of the opener attribute of a tab if it lies
+    // on a different origin, though the tab can still access
+    // window.opener.location. In that scenario, we open the link in the same
+    // tab. We also avoid caching the origin to accommodate push states.
+    if (isSafari && getOrigin(window.location) !== getOrigin(href)) {
+      window.location = href;
+    } else {
+      child = window.open(href);
+      child.opener = null;
+    }
 
     // IE8 and below don't support preventDefault
     if (e.preventDefault) {
@@ -87,6 +110,32 @@
       target[onType] = listener;
     }
   }
+
+  /**
+   * Returns the origin of an url, with cross browser support. Accommodates
+   * the lack of location.origin in IE, as well as the discrepancies in the
+   * inclusion of the port when using the default port for a protocol, e.g.
+   * 443 over https. Defaults to the origin of window.location if passed a
+   * relative path.
+   *
+   * @param   {string} url The url to a cross storage hub
+   * @returns {string} The origin of the url
+   */
+  function getOrigin(url) {
+    var uri, origin;
+
+    uri = document.createElement('a');
+    uri.href = url;
+
+    if (!uri.host) {
+      uri = window.location;
+    }
+
+    origin = uri.protocol + '//' + uri.host;
+    origin = origin.replace(/:80$|:443$/, '');
+
+    return origin;
+  };
 
   /**
    * Export for various environments.
