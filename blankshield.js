@@ -2,38 +2,16 @@
   'use strict';
 
   /**
-   * Cached origin of the page.
-   *
-   * @var {string}
-   */
-  var origin = getOrigin(window.location);
-
-  /**
-   * Lowercase copy of the userAgent.
-   *
-   * @var {string}
-   */
-  var userAgent = navigator.userAgent.toLowerCase();
-
-  /**
-   * Whether or not the browser is Safari.
-   *
-   * @var {boolean}
-   */
-  var isSafari = (userAgent.indexOf('safari') !== -1 &&
-                  userAgent.indexOf('chrome') === -1);
-
-  /**
    * An event listener that can be attached to a click event to protect against
    * reverse tabnabbing. It retrieves the target anchors href, and if the link
    * was intended to open in a new tab or window, the browser's default
-   * behaviour is canceled. Instead, the destination url is opened using
-   * "window.open", followed by setting its window.opener property to null.
+   * behavior is canceled. Instead, the destination url is opened using
+   * "window.open" from an injected iframe, and the iframe is removed.
    *
    * @param {Event} e The click event for a given anchor
    */
   var clickListener = function(e) {
-    var target, href, usedModifier, child, origin;
+    var target, href, usedModifier;
 
     // Use global event object for IE8 and below to get target
     e = e || window.event;
@@ -49,15 +27,7 @@
       return;
     }
 
-    // Safari prevents modification of the opener attribute of a tab if it lies
-    // on a different origin, though the tab can still access
-    // window.opener.location. In that scenario, we use the same tab.
-    if (isSafari && origin !== getOrigin(href)) {
-      window.location = href;
-    } else {
-      child = window.open(href);
-      child.opener = null;
-    }
+    iframeOpen(href);
 
     // IE8 and below don't support preventDefault
     if (e.preventDefault) {
@@ -65,6 +35,8 @@
     } else {
       e.returnValue = false;
     }
+
+    return false;
   };
 
   /**
@@ -97,13 +69,15 @@
    * @param {function} listener
    */
   function addEventListener(target, type, listener) {
+    var onType, prevListener;
+
     // Modern browsers
     if (target.addEventListener) {
       return target.addEventListener(type, listener, false);
     }
 
     // Older browsers
-    var onType = 'on' + type;
+    onType = 'on' + type;
     if (target.attachEvent) {
       target.attachEvent(onType, listener);
     } else if (target[onType]) {
@@ -118,30 +92,28 @@
   }
 
   /**
-   * Returns the origin of an url, with cross browser support. Accommodates
-   * the lack of location.origin in IE, as well as the discrepancies in the
-   * inclusion of the port when using the default port for a protocol, e.g.
-   * 443 over https. Defaults to the origin of window.location if passed a
-   * relative path.
+   * Opens the provided url by injecting a hidden iframe that calls
+   * window.open(), then removes the iframe from the DOM.
    *
-   * @param   {string} url The url to a cross storage hub
-   * @returns {string} The origin of the url
+   * @param {string} url The url to open
    */
-  function getOrigin(url) {
-    var uri, origin;
+  function iframeOpen(url) {
+    var iframe, iframeDoc, script;
 
-    uri = document.createElement('a');
-    uri.href = url;
+    iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
-    if (!uri.host) {
-      uri = window.location;
-    }
+    script = iframeDoc.createElement('script');
+    script.type = 'text/javascript';
+    script.text = 'window.parent = null; window.top = null;' +
+      'window.frameElement = null; var child = window.open("' + url + '");' +
+      'child.opener = null';
+    iframeDoc.body.appendChild(script);
 
-    origin = uri.protocol + '//' + uri.host;
-    origin = origin.replace(/:80$|:443$/, '');
-
-    return origin;
-  };
+    document.body.removeChild(iframe);
+  }
 
   /**
    * Export for various environments.

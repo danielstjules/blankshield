@@ -94,13 +94,19 @@ A handful of solutions exist to prevent this sort of attack. You could:
   different origin.
 * Append `rel="noreferrer"` to any links with `target="_blank"`. When done,
   `window.opener` will be null from the child window. It's well supported among
-  webkit-based browsers, though you'll fall short with IE and even newer
+  webkit-based browsers, though you'll fall short with IE, Safari, and even newer
   releases of FireFox. And of course, it prevents sending the referrer in
   the request headers. You could fall off as an identifiable source of traffic
   for some friendly sites.
 * Listen for the click event and prevent the default browser behavior of
-  opening a new tab. Then, open a new window with the href and set its opener
-  to null. This is what blankshield does.
+  opening a new tab. Then, call `window.open()` with the href and set the
+  the child's opener to null. Unfortunately, this does not work for Safari.
+  Safari's cross-origin security prevents the modification of window.opener of a
+  child window if it lies on a different origin, yet still allows the child
+  window to access window.opener.location.
+* Listen for the click event and prevent the default browser behavior of
+  opening a new tab. Inject a hidden iframe that opens the new tab, then
+  immediately remove the iframe. This is what blankshield does.
 
 ## Installation
 
@@ -149,9 +155,3 @@ This library only helps make it easier to prevent reverse tabnabbing which takes
 advantage of `target="_blank"`. However, it doesn't help with other elements
 or behavior that calls, for example, `window.open()`. Or anchors that use a
 target other than _blank.
-
-For Safari users, the href is opened in the existing tab if it lies on a
-different origin from the page. This is because Safari's cross-origin security
-prevents the modification of window.opener of a child window, yet still allows
-the child window to access window.opener.location. `rel="noreferrer"` also
-does not prevent the attack.
