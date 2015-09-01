@@ -46,6 +46,8 @@ Is there a chance you might not check the URL? That you didn't notice the tab
 icon refresh? While many are suspicious of links they click and new tabs they
 open - what about existing tabs?
 
+![demo](http://danielstjules.com/github/blankshield-chrome-demo.gif)
+
 ## Vulnerable browsers
 
 The following table outlines the scope of affected browsers:
