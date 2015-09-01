@@ -2,16 +2,25 @@
   'use strict';
 
   /**
+   * Detect IE versions older than 11.
+   *
+   * @var {boolean}
+   */
+  var oldIE = navigator.userAgent.indexOf('MSIE') !== -1;
+
+  /**
    * An event listener that can be attached to a click event to protect against
    * reverse tabnabbing. It retrieves the target anchors href, and if the link
    * was intended to open in a new tab or window, the browser's default
    * behavior is canceled. Instead, the destination url is opened using
-   * "window.open" from an injected iframe, and the iframe is removed.
+   * "window.open" from an injected iframe, and the iframe is removed. Except
+   * for IE < 11, which uses "window.open" followed by setting the child
+   * window's opener to null.
    *
    * @param {Event} e The click event for a given anchor
    */
   var clickListener = function(e) {
-    var target, href, usedModifier;
+    var target, href, usedModifier, child;
 
     // Use global event object for IE8 and below to get target
     e = e || window.event;
@@ -27,7 +36,14 @@
       return;
     }
 
-    iframeOpen(href);
+    if (oldIE) {
+      // Replace child.opener for old IE to avoid appendChild errors
+      // We do it for all to avoid having to sniff for specific versions
+      child = window.open(href);
+      child.opener = null;
+    } else {
+      iframeOpen(href);
+    }
 
     // IE8 and below don't support preventDefault
     if (e.preventDefault) {

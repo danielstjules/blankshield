@@ -94,10 +94,9 @@ A handful of solutions exist to prevent this sort of attack. You could:
   different origin.
 * Append `rel="noreferrer"` to any links with `target="_blank"`. When done,
   `window.opener` will be null from the child window. It's well supported among
-  webkit-based browsers, though you'll fall short with IE, Safari, and even newer
-  releases of FireFox. And of course, it prevents sending the referrer in
-  the request headers. You could fall off as an identifiable source of traffic
-  for some friendly sites.
+  webkit-based browsers, though you'll fall short with IE andSafari. And of
+  course, it prevents sending the referrer in the request headers. You could
+  fall off as an identifiable source of traffic for some friendly sites.
 * Listen for the click event and prevent the default browser behavior of
   opening a new tab. Then, call `window.open()` with the href and set the
   the child's opener to null. Unfortunately, this does not work for Safari.
