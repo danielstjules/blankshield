@@ -262,12 +262,12 @@
     /**
      * blankshield - Prevent reverse tabnabbing phishing attacks caused by _blank
      *
-     * @version   0.3.0
+     * @version   0.4.0
      * @link      https://github.com/danielstjules/blankshield
      * @author    Daniel St. Jules <danielst.jules@gmail.com>
      * @license   MIT
      */
-    !function(e){"use strict";function t(e,t,n){if(e.addEventListener)return e.addEventListener(t,n,!1);var o="on"+t;e.attachEvent?e.attachEvent(o,n):e[o]?(prevListener=e[o],e[o]=function(){n(),prevListener()}):e[o]=n}function n(e){var t,n;return t=document.createElement("a"),t.href=e,t.host||(t=window.location),n=t.protocol+"//"+t.host,n=n.replace(/:80$|:443$/,"")}var o=navigator.userAgent.toLowerCase(),i=-1!==o.indexOf("safari")&&-1===o.indexOf("chrome"),r=function(e){var t,o,r,a;e=e||window.event,t=e.target||e.srcElement,o=t.getAttribute("href"),o&&(r=e.ctrlKey||e.shiftKey||e.metaKey,(r||"_blank"===t.getAttribute("target"))&&(i&&n(window.location)!==n(o)?window.location=o:(a=window.open(o),a.opener=null),e.preventDefault?e.preventDefault():e.returnValue=!1))},a=function(e){if("undefined"==typeof e.length)t(e,"click",r);else if("string"!=typeof e&&!(e instanceof String))for(var n=0;n<e.length;n++)t(e[n],"click",r)};"undefined"!=typeof exports&&("undefined"!=typeof module&&module.exports?module.exports=a:exports.blankshield=a),"function"==typeof define&&"object"==typeof define.amd&&define("blankshield",[],function(){return a}),e.blankshield=a}(this);
+    !function(e){"use strict";function t(e,t,n){var o,i;return e.addEventListener?e.addEventListener(t,n,!1):(o="on"+t,e.attachEvent?e.attachEvent(o,n):e[o]?(i=e[o],e[o]=function(){n(),i()}):e[o]=n,void 0)}function n(e){var t,n,o;t=document.createElement("iframe"),t.style.display="none",document.body.appendChild(t),n=t.contentDocument||t.contentWindow.document,o=n.createElement("script"),o.type="text/javascript",o.text='window.parent = null; window.top = null;window.frameElement = null; var child = window.open("'+e+'");child.opener = null',n.body.appendChild(o),document.body.removeChild(t)}var o=-1!==navigator.userAgent.indexOf("MSIE"),i=function(e){var t,i,d,r;return e=e||window.event,t=e.target||e.srcElement,i=t.getAttribute("href"),i&&(d=e.ctrlKey||e.shiftKey||e.metaKey,d||"_blank"===t.getAttribute("target"))?(o?(r=window.open(i),r.opener=null):n(i),e.preventDefault?e.preventDefault():e.returnValue=!1,!1):void 0},d=function(e){if("undefined"==typeof e.length)t(e,"click",i);else if("string"!=typeof e&&!(e instanceof String))for(var n=0;n<e.length;n++)t(e[n],"click",i)};"undefined"!=typeof exports&&("undefined"!=typeof module&&module.exports?module.exports=d:exports.blankshield=d),"function"==typeof define&&"object"==typeof define.amd&&define("blankshield",[],function(){return d}),e.blankshield=d}(this);
   </script>
   <script>
     function isFF() {
