@@ -9,6 +9,65 @@
   var oldIE = navigator.userAgent.indexOf('MSIE') !== -1;
 
   /**
+   * Cached window.open function.
+   *
+   * @var {function}
+   */
+  var open = window.open;
+
+  /**
+   * blankshield is the main function exported by the library. It accepts an
+   * anchor element or array of elements, adding an event listener to each to
+   * help mitigate a potential reverse tabnabbing attack. For performance, any
+   * supplied object with a length attribute is assumed to be an array.
+   *
+   * @param {HTMLAnchorElement|HTMLAnchorElement[]} target
+   */
+  function blankshield(target) {
+    if (typeof target.length === 'undefined') {
+      addEventListener(target, 'click', clickListener);
+    } else if (typeof target !== 'string' && !(target instanceof String)) {
+      for (var i = 0; i < target.length; i++) {
+        addEventListener(target[i], 'click', clickListener);
+      }
+    }
+  };
+
+  /**
+   * Accepts the same arguments as window.open. If the strWindowName is
+   * empty or equal to _blank, it opens the destination url using "window.open"
+   * from an injected iframe, then removes the iframe. This behavior applies
+   * to all browsers except IE < 11, which use "window.open" followed by setting
+   * the child window's opener to null. If the strWindowName is set to some
+   * other value, the url is simply opened with window.open().
+   *
+   * @param {string} strUrl
+   * @param {string} [strWindowName]
+   * @param {string} [strWindowFeatures]
+   */
+  blankshield.open = function(strUrl, strWindowName) {
+    if (strWindowName && strWindowName !== '_blank') {
+      open.apply(window, arguments);
+    } else if (!oldIE) {
+      iframeOpen(strUrl);
+    } else {
+      // Replace child.opener for old IE to avoid appendChild errors
+      // We do it for all to avoid having to sniff for specific versions
+      child = open.call(window, strUrl);
+      child.opener = null;
+    }
+  };
+
+  /**
+   * Patches window.open() to use blankshield.open() for _blank targets.
+   */
+  blankshield.patch = function() {
+    window.open = function() {
+      blankshield.open.apply(this, arguments);
+    }
+  };
+
+  /**
    * An event listener that can be attached to a click event to protect against
    * reverse tabnabbing. It retrieves the target anchors href, and if the link
    * was intended to open in a new tab or window, the browser's default
@@ -19,7 +78,7 @@
    *
    * @param {Event} e The click event for a given anchor
    */
-  var clickListener = function(e) {
+  function clickListener(e) {
     var target, href, usedModifier, child;
 
     // Use global event object for IE8 and below to get target
@@ -36,14 +95,7 @@
       return;
     }
 
-    if (oldIE) {
-      // Replace child.opener for old IE to avoid appendChild errors
-      // We do it for all to avoid having to sniff for specific versions
-      child = window.open(href);
-      child.opener = null;
-    } else {
-      iframeOpen(href);
-    }
+    blankshield.open(href);
 
     // IE8 and below don't support preventDefault
     if (e.preventDefault) {
@@ -53,27 +105,6 @@
     }
 
     return false;
-  };
-
-  /**
-   * blankshield is the function exported by the library. It accepts an anchor
-   * element or array of elements, adding an event listener to each to help
-   * mitigate a potential reverse tabnabbing attack. For performance, any
-   * supplied object with a length attribute is assumed to be an array. As a
-   * result, the function is not compatible with HTMLAnchorElements that have
-   * had a length property added. I'd imagine this is quite the edge case, and
-   * an acceptable trade-off.
-   *
-   * @param {HTMLAnchorElement|HTMLAnchorElement[]} target
-   */
-  var blankshield = function(target) {
-    if (typeof target.length === 'undefined') {
-      addEventListener(target, 'click', clickListener);
-    } else if (typeof target !== 'string' && !(target instanceof String)) {
-      for (var i = 0; i < target.length; i++) {
-        addEventListener(target[i], 'click', clickListener);
-      }
-    }
   };
 
   /**

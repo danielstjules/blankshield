@@ -8,8 +8,9 @@ as well as IE6-11.
 
 * [Overview](#overview)
 * [Vulnerable browsers](#vulnerable-browsers)
-* [Solutions](#solutions)
 * [Installation](#installation)
+* [Usage](#usage)
+* [Solutions](#solutions)
 * [Caveats](#caveats)
 
 ## Overview
@@ -86,27 +87,6 @@ The following table outlines the scope of affected browsers:
 <sup>[1]</sup> IE is not vulnerable to the attack by default. However, this can
 change depending on security zone settings.
 
-## Solutions
-
-A handful of solutions exist to prevent this sort of attack. You could:
-
-* Remove or disallow `target="_blank"` for any anchors pointing to a
-  different origin.
-* Append `rel="noreferrer"` to any links with `target="_blank"`. When done,
-  `window.opener` will be null from the child window. It's well supported among
-  webkit-based browsers, though you'll fall short with IE andSafari. And of
-  course, it prevents sending the referrer in the request headers. You could
-  fall off as an identifiable source of traffic for some friendly sites.
-* Listen for the click event and prevent the default browser behavior of
-  opening a new tab. Then, call `window.open()` with the href and set the
-  the child's opener to null. Unfortunately, this does not work for Safari.
-  Safari's cross-origin security prevents the modification of window.opener of a
-  child window if it lies on a different origin, yet still allows the child
-  window to access window.opener.location.
-* Listen for the click event and prevent the default browser behavior of
-  opening a new tab. Inject a hidden iframe that opens the new tab, then
-  immediately remove the iframe. This is what blankshield does.
-
 ## Installation
 
 The library can be installed via npm:
@@ -123,8 +103,14 @@ bower install blankshield
 
 ## Usage
 
-blankshield.js, which works in global, CommonJS and AMD contexts, exports
-a single function: `blankshield()`.
+blankshield.js works in global, CommonJS and AMD contexts.
+
+#### blankshield()
+
+blankshield is the main function exported by the library. It accepts an
+anchor element or array of elements, adding an event listener to each to
+help mitigate a potential reverse tabnabbing attack. For performance, any
+supplied object with a length attribute is assumed to be an array.
 
 ``` JavaScript
 // It works on a single element
@@ -147,6 +133,49 @@ anchor.addEventListener('click', function(e) {
 });
 blankshield(document.getElementById('some-anchor'));
 ```
+
+#### blankshield.open()
+
+Accepts the same arguments as window.open. If the strWindowName is
+empty or equal to _blank, it opens the destination url using "window.open"
+from an injected iframe, then removes the iframe. This behavior applies
+to all browsers except IE < 11, which use "window.open" followed by setting
+the child window's opener to null. If the strWindowName is set to some
+other value, the url is simply opened with window.open().
+
+``` JavaScript
+// To open an url with blankshield, instead of window.open()
+blankshield.open('https://www.github.com/danielstjules');
+```
+
+#### blankshield.patch()
+
+Patches window.open() to use blankshield.open() for _blank targets.
+
+``` JavaScript
+blankshield.patch();
+```
+
+## Solutions
+
+A handful of solutions exist to prevent this sort of attack. You could:
+
+* Remove or disallow `target="_blank"` for any anchors pointing to a
+  different origin.
+* Append `rel="noreferrer"` to any links with `target="_blank"`. When done,
+  `window.opener` will be null from the child window. It's well supported among
+  webkit-based browsers, though you'll fall short with IE andSafari. And of
+  course, it prevents sending the referrer in the request headers. You could
+  fall off as an identifiable source of traffic for some friendly sites.
+* Listen for the click event and prevent the default browser behavior of
+  opening a new tab. Then, call `window.open()` with the href and set the
+  the child's opener to null. Unfortunately, this does not work for Safari.
+  Safari's cross-origin security prevents the modification of window.opener of a
+  child window if it lies on a different origin, yet still allows the child
+  window to access window.opener.location.
+* Listen for the click event and prevent the default browser behavior of
+  opening a new tab. Inject a hidden iframe that opens the new tab, then
+  immediately remove the iframe. This is what blankshield does.
 
 ## Caveats
 
