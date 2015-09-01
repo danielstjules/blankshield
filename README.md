@@ -10,6 +10,9 @@ as well as IE6-11.
 * [Vulnerable browsers](#vulnerable-browsers)
 * [Installation](#installation)
 * [Usage](#usage)
+  * [blankshield()](#blankshield-1)
+  * [blankshield.open()](#blankshieldopen)
+  * [blankshield.patch()](#blankshieldpatch)
 * [Solutions](#solutions)
 * [Caveats](#caveats)
 
@@ -92,7 +95,7 @@ change depending on security zone settings.
 The library can be installed via npm:
 
 ``` bash
-npm install blankshield
+npm install --save blankshield
 ```
 
 Or using bower:
