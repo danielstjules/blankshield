@@ -181,10 +181,3 @@ A handful of solutions exist to prevent this sort of attack. You could:
 * Listen for the click event and prevent the default browser behavior of
   opening a new tab. Inject a hidden iframe that opens the new tab, then
   immediately remove the iframe. This is what blankshield does.
-
-## Caveats
-
-This library only helps make it easier to prevent reverse tabnabbing which takes
-advantage of `target="_blank"`. However, it doesn't help with other elements
-or behavior that calls, for example, `window.open()`. Or anchors that use a
-target other than _blank.
