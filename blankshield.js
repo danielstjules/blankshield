@@ -46,6 +46,8 @@
    * @param {string} [strWindowFeatures]
    */
   blankshield.open = function(strUrl, strWindowName) {
+    var child;
+    
     if (strWindowName && strWindowName !== '_blank') {
       open.apply(window, arguments);
     } else if (!oldIE) {
