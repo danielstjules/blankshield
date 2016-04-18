@@ -35,7 +35,8 @@
 
   /**
    * Accepts the same arguments as window.open. If the strWindowName is
-   * empty or equal to _blank, it opens the destination url using "window.open"
+   * not equal to one of safe targets (_top, _self or _parent),
+   * then it opens the destination url using "window.open"
    * from an injected iframe, then removes the iframe. This behavior applies
    * to all browsers except IE < 11, which use "window.open" followed by setting
    * the child window's opener to null. If the strWindowName is set to some
@@ -48,7 +49,7 @@
   blankshield.open = function(strUrl, strWindowName) {
     var child;
     
-    if (strWindowName && strWindowName !== '_blank') {
+    if (strWindowName && (strWindowName === '_top' || strWindowName === '_self' || strWindowName === '_parent')) {
       open.apply(window, arguments);
     } else if (!oldIE) {
       iframeOpen(strUrl);
@@ -61,7 +62,7 @@
   };
 
   /**
-   * Patches window.open() to use blankshield.open() for _blank targets.
+   * Patches window.open() to use blankshield.open() for new window/tab targets.
    */
   blankshield.patch = function() {
     window.open = function() {
@@ -81,7 +82,7 @@
    * @param {Event} e The click event for a given anchor
    */
   function clickListener(e) {
-    var target, href, usedModifier, child;
+    var target, targetName, href, usedModifier, child;
 
     // Use global event object for IE8 and below to get target
     e = e || window.event;
@@ -91,9 +92,10 @@
     href = target.getAttribute('href');
     if (!href) return;
 
-    // Ignore anchors without a blank target or modifier key
+    // Ignore anchors without an unsafe target or modifier key
     usedModifier = (e.ctrlKey || e.shiftKey || e.metaKey);
-    if (!usedModifier && target.getAttribute('target') !== '_blank') {
+    targetName = target.getAttribute('target');
+    if (!usedModifier && (!targetName || targetName === '_top' || targetName === '_self' || targetName === '_parent')) {
       return;
     }
 
