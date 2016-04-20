@@ -86,7 +86,9 @@
 
     // Use global event object for IE8 and below to get target
     e = e || window.event;
-    target = e.target || e.srcElement;
+    // Won't work for IE8 and below for cases when e.srcElement
+    // refers not to the anchor, but to the element inside it e.g. an image
+    target = e.currentTarget || e.srcElement;
 
     // Ignore anchors without an href
     href = target.getAttribute('href');
