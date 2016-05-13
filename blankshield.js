@@ -46,18 +46,19 @@
    * @param {string} [strWindowName]
    * @param {string} [strWindowFeatures]
    */
-  blankshield.open = function(strUrl, strWindowName) {
+  blankshield.open = function(strUrl, strWindowName, strWindowFeatures) {
     var child;
     
     if (strWindowName && (strWindowName === '_top' || strWindowName === '_self' || strWindowName === '_parent')) {
-      open.apply(window, arguments);
+      return open.apply(window, arguments);
     } else if (!oldIE) {
-      iframeOpen(strUrl);
+      return iframeOpen(strUrl, strWindowName, strWindowFeatures);
     } else {
       // Replace child.opener for old IE to avoid appendChild errors
       // We do it for all to avoid having to sniff for specific versions
-      child = open.call(window, strUrl);
+      child = open.apply(window, arguments);
       child.opener = null;
+      return child;
     }
   };
 
@@ -66,7 +67,7 @@
    */
   blankshield.patch = function() {
     window.open = function() {
-      blankshield.open.apply(this, arguments);
+      return blankshield.open.apply(this, arguments);
     }
   };
 
@@ -149,23 +150,35 @@
    * window.open(), then removes the iframe from the DOM.
    *
    * @param {string} url The url to open
+   * @param {string} [strWindowName]
+   * @param {string} [strWindowFeatures]
    */
-  function iframeOpen(url) {
-    var iframe, iframeDoc, script;
+  function iframeOpen(url, strWindowName, strWindowFeatures) {
+    var iframe, iframeDoc, script, openArgs, newWin;
 
     iframe = document.createElement('iframe');
     iframe.style.display = 'none';
     document.body.appendChild(iframe);
     iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
+    openArgs = '"' + url + '"';
+    if (strWindowName) {
+        openArgs += ', "' + strWindowName + '"';
+    }
+    if (strWindowFeatures) {
+        openArgs += ', "' + strWindowFeatures + '"';
+    }
+
     script = iframeDoc.createElement('script');
     script.type = 'text/javascript';
     script.text = 'window.parent = null; window.top = null;' +
-      'window.frameElement = null; var child = window.open("' + url + '");' +
+      'window.frameElement = null; var child = window.open(' + openArgs + ');' +
       'child.opener = null';
     iframeDoc.body.appendChild(script);
+    newWin = iframe.contentWindow.child;
 
     document.body.removeChild(iframe);
+    return newWin;
   }
 
   /**
