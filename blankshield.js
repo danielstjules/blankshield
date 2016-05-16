@@ -163,10 +163,10 @@
 
     openArgs = '"' + url + '"';
     if (strWindowName) {
-        openArgs += ', "' + strWindowName + '"';
+      openArgs += ', "' + strWindowName + '"';
     }
     if (strWindowFeatures) {
-        openArgs += ', "' + strWindowFeatures + '"';
+      openArgs += ', "' + strWindowFeatures + '"';
     }
 
     script = iframeDoc.createElement('script');
