@@ -35,7 +35,8 @@
 
   /**
    * Accepts the same arguments as window.open. If the strWindowName is
-   * empty or equal to _blank, it opens the destination url using "window.open"
+   * not equal to one of safe targets (_top, _self or _parent),
+   * then it opens the destination url using "window.open"
    * from an injected iframe, then removes the iframe. This behavior applies
    * to all browsers except IE < 11, which use "window.open" followed by setting
    * the child window's opener to null. If the strWindowName is set to some
@@ -45,27 +46,28 @@
    * @param {string} [strWindowName]
    * @param {string} [strWindowFeatures]
    */
-  blankshield.open = function(strUrl, strWindowName) {
+  blankshield.open = function(strUrl, strWindowName, strWindowFeatures) {
     var child;
     
-    if (strWindowName && strWindowName !== '_blank') {
-      open.apply(window, arguments);
+    if (strWindowName && (strWindowName === '_top' || strWindowName === '_self' || strWindowName === '_parent')) {
+      return open.apply(window, arguments);
     } else if (!oldIE) {
-      iframeOpen(strUrl);
+      return iframeOpen(strUrl, strWindowName, strWindowFeatures);
     } else {
       // Replace child.opener for old IE to avoid appendChild errors
       // We do it for all to avoid having to sniff for specific versions
-      child = open.call(window, strUrl);
+      child = open.apply(window, arguments);
       child.opener = null;
+      return child;
     }
   };
 
   /**
-   * Patches window.open() to use blankshield.open() for _blank targets.
+   * Patches window.open() to use blankshield.open() for new window/tab targets.
    */
   blankshield.patch = function() {
     window.open = function() {
-      blankshield.open.apply(this, arguments);
+      return blankshield.open.apply(this, arguments);
     }
   };
 
@@ -81,19 +83,22 @@
    * @param {Event} e The click event for a given anchor
    */
   function clickListener(e) {
-    var target, href, usedModifier, child;
+    var target, targetName, href, usedModifier, child;
 
     // Use global event object for IE8 and below to get target
     e = e || window.event;
-    target = e.target || e.srcElement;
+    // Won't work for IE8 and below for cases when e.srcElement
+    // refers not to the anchor, but to the element inside it e.g. an image
+    target = e.currentTarget || e.srcElement;
 
     // Ignore anchors without an href
     href = target.getAttribute('href');
     if (!href) return;
 
-    // Ignore anchors without a blank target or modifier key
+    // Ignore anchors without an unsafe target or modifier key
     usedModifier = (e.ctrlKey || e.shiftKey || e.metaKey);
-    if (!usedModifier && target.getAttribute('target') !== '_blank') {
+    targetName = target.getAttribute('target');
+    if (!usedModifier && (!targetName || targetName === '_top' || targetName === '_self' || targetName === '_parent')) {
       return;
     }
 
@@ -145,23 +150,35 @@
    * window.open(), then removes the iframe from the DOM.
    *
    * @param {string} url The url to open
+   * @param {string} [strWindowName]
+   * @param {string} [strWindowFeatures]
    */
-  function iframeOpen(url) {
-    var iframe, iframeDoc, script;
+  function iframeOpen(url, strWindowName, strWindowFeatures) {
+    var iframe, iframeDoc, script, openArgs, newWin;
 
     iframe = document.createElement('iframe');
     iframe.style.display = 'none';
     document.body.appendChild(iframe);
     iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
+    openArgs = '"' + url + '"';
+    if (strWindowName) {
+      openArgs += ', "' + strWindowName + '"';
+    }
+    if (strWindowFeatures) {
+      openArgs += ', "' + strWindowFeatures + '"';
+    }
+
     script = iframeDoc.createElement('script');
     script.type = 'text/javascript';
     script.text = 'window.parent = null; window.top = null;' +
-      'window.frameElement = null; var child = window.open("' + url + '");' +
+      'window.frameElement = null; var child = window.open(' + openArgs + ');' +
       'child.opener = null';
     iframeDoc.body.appendChild(script);
+    newWin = iframe.contentWindow.child;
 
     document.body.removeChild(iframe);
+    return newWin;
   }
 
   /**
