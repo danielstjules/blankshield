@@ -10,8 +10,8 @@ as well as IE6-11.
 * [Vulnerable browsers](#vulnerable-browsers)
 * [Installation](#installation)
 * [Usage](#usage)
-  * [blankshield()](#blankshield-1)
-  * [blankshield.open()](#blankshieldopen)
+  * [blankshield(target)](#blankshield-1)
+  * [blankshield.open(strUrl, \[strWindowName\], \[strWindowFeatures\])](#blankshieldopen)
   * [blankshield.patch()](#blankshieldpatch)
 * [Solutions](#solutions)
 * [Caveats](#caveats)
@@ -110,7 +110,7 @@ bower install blankshield
 
 blankshield.js works in global, CommonJS and AMD contexts.
 
-#### blankshield()
+#### blankshield(target)
 
 blankshield is the main function exported by the library. It accepts an
 anchor element or array of elements, adding an event listener to each to
@@ -139,7 +139,7 @@ anchor.addEventListener('click', function(e) {
 blankshield(document.getElementById('some-anchor'));
 ```
 
-#### blankshield.open()
+#### blankshield.open(strUrl, \[strWindowName\], \[strWindowFeatures\])
 
 Accepts the same arguments as window.open. If the strWindowName is not
 equal to one of the safe targets (_top, _self or _parent), then it opens
