@@ -34,13 +34,13 @@
   };
 
   /**
-   * Accepts the same arguments as window.open. If the strWindowName is
-   * not equal to one of safe targets (_top, _self or _parent),
-   * then it opens the destination url using "window.open"
-   * from an injected iframe, then removes the iframe. This behavior applies
-   * to all browsers except IE < 11, which use "window.open" followed by setting
-   * the child window's opener to null. If the strWindowName is set to some
-   * other value, the url is simply opened with window.open().
+   * Accepts the same arguments as window.open. If the strWindowName is not
+   * equal to one of the safe targets (_top, _self or _parent), then it opens
+   * the destination url using "window.open" from an injected iframe, then
+   * removes the iframe. This behavior applies to all browsers except IE < 11,
+   * which use "window.open" followed by setting the child window's opener to
+   * null. If the strWindowName is set to some other value, the url is simply
+   * opened with window.open().
    *
    * @param {string} strUrl
    * @param {string} [strWindowName]
@@ -48,8 +48,8 @@
    */
   blankshield.open = function(strUrl, strWindowName, strWindowFeatures) {
     var child;
-    
-    if (strWindowName && (strWindowName === '_top' || strWindowName === '_self' || strWindowName === '_parent')) {
+
+    if (safeTarget(strWindowName)) {
       return open.apply(window, arguments);
     } else if (!oldIE) {
       return iframeOpen(strUrl, strWindowName, strWindowFeatures);
@@ -98,7 +98,7 @@
     // Ignore anchors without an unsafe target or modifier key
     usedModifier = (e.ctrlKey || e.shiftKey || e.metaKey);
     targetName = target.getAttribute('target');
-    if (!usedModifier && (!targetName || targetName === '_top' || targetName === '_self' || targetName === '_parent')) {
+    if (!usedModifier && (!targetName || safeTarget(targetName)) {
       return;
     }
 
@@ -179,6 +179,16 @@
 
     document.body.removeChild(iframe);
     return newWin;
+  }
+
+  /**
+   * Returns whether or not the given target is safe.
+   *
+   * @param  {string}  target
+   * @return {boolean}
+   */
+  function safeTarget(target) {
+    return ['_top', '_self', '_parent'].indexOf(target) !== -1;
   }
 
   /**

@@ -141,12 +141,13 @@ blankshield(document.getElementById('some-anchor'));
 
 #### blankshield.open()
 
-Accepts the same arguments as window.open. If the strWindowName is
-empty or equal to _blank, it opens the destination url using "window.open"
-from an injected iframe, then removes the iframe. This behavior applies
-to all browsers except IE < 11, which use "window.open" followed by setting
-the child window's opener to null. If the strWindowName is set to some
-other value, the url is simply opened with window.open().
+Accepts the same arguments as window.open. If the strWindowName is not
+equal to one of the safe targets (_top, _self or _parent), then it opens
+the destination url using "window.open" from an injected iframe, then
+removes the iframe. This behavior applies to all browsers except IE < 11,
+which use "window.open" followed by setting the child window's opener to
+null. If the strWindowName is set to some other value, the url is simply
+opened with window.open().
 
 ``` JavaScript
 // To open an url with blankshield, instead of window.open()
