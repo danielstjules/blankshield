@@ -188,7 +188,7 @@
    * @return {boolean}
    */
   function safeTarget(target) {
-    return ['_top', '_self', '_parent'].indexOf(target) !== -1;
+    return target === '_top' || target === '_self' || target === '_parent';
   }
 
   /**
