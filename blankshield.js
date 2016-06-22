@@ -42,9 +42,10 @@
    * null. If the strWindowName is set to some other value, the url is simply
    * opened with window.open().
    *
-   * @param {string} strUrl
-   * @param {string} [strWindowName]
-   * @param {string} [strWindowFeatures]
+   * @param   {string} strUrl
+   * @param   {string} [strWindowName]
+   * @param   {string} [strWindowFeatures]
+   * @returns {Window}
    */
   blankshield.open = function(strUrl, strWindowName, strWindowFeatures) {
     var child;
@@ -149,9 +150,10 @@
    * Opens the provided url by injecting a hidden iframe that calls
    * window.open(), then removes the iframe from the DOM.
    *
-   * @param {string} url The url to open
-   * @param {string} [strWindowName]
-   * @param {string} [strWindowFeatures]
+   * @param   {string} url The url to open
+   * @param   {string} [strWindowName]
+   * @param   {string} [strWindowFeatures]
+   * @returns {Window}
    */
   function iframeOpen(url, strWindowName, strWindowFeatures) {
     var iframe, iframeDoc, script, openArgs, newWin;
