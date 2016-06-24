@@ -31,7 +31,7 @@
         addEventListener(target[i], 'click', clickListener);
       }
     }
-  };
+  }
 
   /**
    * Accepts the same arguments as window.open. If the strWindowName is not
@@ -69,7 +69,7 @@
   blankshield.patch = function() {
     window.open = function() {
       return blankshield.open.apply(this, arguments);
-    }
+    };
   };
 
   /**
@@ -84,7 +84,7 @@
    * @param {Event} e The click event for a given anchor
    */
   function clickListener(e) {
-    var target, targetName, href, usedModifier, child;
+    var target, targetName, href, usedModifier;
 
     // Use global event object for IE8 and below to get target
     e = e || window.event;
@@ -99,7 +99,7 @@
     // Ignore anchors without an unsafe target or modifier key
     usedModifier = (e.ctrlKey || e.shiftKey || e.metaKey);
     targetName = target.getAttribute('target');
-    if (!usedModifier && (!targetName || safeTarget(targetName)) {
+    if (!usedModifier && (!targetName || safeTarget(targetName))) {
       return;
     }
 
@@ -113,7 +113,7 @@
     }
 
     return false;
-  };
+  }
 
   /**
    * A cross-browser addEventListener function that adds a listener for the
