@@ -152,6 +152,13 @@ opened with window.open().
 ``` JavaScript
 // To open an url with blankshield, instead of window.open()
 blankshield.open('https://www.github.com/danielstjules');
+
+// To bind a listener using jQuery with event delegation
+// (Assumes no other listeners prevent propagation)
+$('body').on('click', 'a[target=_blank]', function() {
+  var href = $(this).attr('href');
+  blankshield.open(href);
+});
 ```
 
 #### blankshield.patch()
