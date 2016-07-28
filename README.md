@@ -155,9 +155,10 @@ blankshield.open('https://www.github.com/danielstjules');
 
 // To bind a listener using jQuery with event delegation
 // (Assumes no other listeners prevent propagation)
-$('body').on('click', 'a[target=_blank]', function() {
+$('body').on('click', 'a[target=_blank]', function(event) {
   var href = $(this).attr('href');
   blankshield.open(href);
+  event.preventDefault();
 });
 ```
 
