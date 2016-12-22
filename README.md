@@ -176,7 +176,7 @@ A handful of solutions exist to prevent this sort of attack. You could:
 
 * Remove or disallow `target="_blank"` for any anchors pointing to a
   different origin.
-* Append `rel="noreferrer"` to any links with `target="_blank"`. When done,
+* Append `rel="noopener noreferrer"` to any links with `target="_blank"`. When done,
   `window.opener` will be null from the child window. It's well supported among
   webkit-based browsers, though you'll fall short with IE andSafari. And of
   course, it prevents sending the referrer in the request headers. You could
