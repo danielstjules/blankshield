@@ -184,7 +184,7 @@ A handful of solutions exist to prevent this sort of attack. You could:
   fall off as an identifiable source of traffic for some friendly sites.
 * Append `rel="noopener"` to any links with `target="_blank"`. When done,
   `window.opener` will be null from the child window. See
-  [caniuse](http://caniuse.com/#feat=rel-noopener) for current browser support
+  [caniuse](http://caniuse.com/#feat=rel-noopener) for current browser support.
 * Listen for the click event and prevent the default browser behavior of
   opening a new tab. Then, call `window.open()` with the href and set the
   the child's opener to null. Unfortunately, this does not work for Safari.
