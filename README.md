@@ -4,7 +4,8 @@ Prevent [reverse tabnabbing](https://sites.google.com/site/bughunteruniversity/n
 based phishing attacks that take advantage of _blank targets.
 [Demo](http://danielstjules.github.io/blankshield/). The library has been tested
 and is compatible with the latest versions of Chrome, Firefox, Safari, Opera,
-as well as IE6-11.
+as well as IE6-11. This is a cross-browser solution for browsers that do not
+support [noopener](http://caniuse.com/#feat=rel-noopener).
 
 * [Overview](#overview)
 * [Vulnerable browsers](#vulnerable-browsers)
@@ -181,6 +182,9 @@ A handful of solutions exist to prevent this sort of attack. You could:
   webkit-based browsers, though you'll fall short with IE andSafari. And of
   course, it prevents sending the referrer in the request headers. You could
   fall off as an identifiable source of traffic for some friendly sites.
+* Append `rel="noopener"` to any links with `target="_blank"`. When done,
+  `window.opener` will be null from the child window. See
+  [caniuse](http://caniuse.com/#feat=rel-noopener) for current browser support
 * Listen for the click event and prevent the default browser behavior of
   opening a new tab. Then, call `window.open()` with the href and set the
   the child's opener to null. Unfortunately, this does not work for Safari.
