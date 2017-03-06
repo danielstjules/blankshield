@@ -15,7 +15,6 @@ support [noopener](http://caniuse.com/#feat=rel-noopener).
   * [blankshield.open(strUrl, \[strWindowName\], \[strWindowFeatures\])](#blankshieldopenstrurl-strwindowname-strwindowfeatures)
   * [blankshield.patch()](#blankshieldpatch)
 * [Solutions](#solutions)
-* [Caveats](#caveats)
 
 ## Overview
 
@@ -179,7 +178,7 @@ A handful of solutions exist to prevent this sort of attack. You could:
   different origin.
 * Append `rel="noreferrer"` to any links with `target="_blank"`. When done,
   `window.opener` will be null from the child window. It's well supported among
-  webkit-based browsers, though you'll fall short with IE andSafari. And of
+  webkit-based browsers, though you'll fall short with IE and Safari. And of
   course, it prevents sending the referrer in the request headers. You could
   fall off as an identifiable source of traffic for some friendly sites.
 * Append `rel="noopener"` to any links with `target="_blank"`. When done,
@@ -188,9 +187,9 @@ A handful of solutions exist to prevent this sort of attack. You could:
 * Listen for the click event and prevent the default browser behavior of
   opening a new tab. Then, call `window.open()` with the href and set the
   the child's opener to null. Unfortunately, this does not work for Safari.
-  Safari's cross-origin security prevents the modification of window.opener of a
+  Safari's cross-origin security prevents the modification of `window.opener` of a
   child window if it lies on a different origin, yet still allows the child
-  window to access window.opener.location.
+  window to access `window.opener.location`.
 * Listen for the click event and prevent the default browser behavior of
   opening a new tab. Inject a hidden iframe that opens the new tab, then
   immediately remove the iframe. This is what blankshield does.
