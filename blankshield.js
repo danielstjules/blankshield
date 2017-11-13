@@ -1,20 +1,5 @@
 ;(function(root) {
   'use strict';
-
-  /**
-   * Detect IE versions older than 11.
-   *
-   * @var {boolean}
-   */
-  var oldIE = navigator.userAgent.indexOf('MSIE') !== -1;
-
-  /**
-   * Cached window.open function.
-   *
-   * @var {function}
-   */
-  var open = window.open;
-
   /**
    * blankshield is the main function exported by the library. It accepts an
    * anchor element or array of elements, adding an event listener to each to
@@ -48,16 +33,18 @@
    * @returns {Window}
    */
   blankshield.open = function(strUrl, strWindowName, strWindowFeatures) {
+    // detect IE versions older than 11
+    var oldIE = navigator.userAgent.indexOf('MSIE') !== -1;
     var child;
 
     if (safeTarget(strWindowName)) {
-      return open.apply(window, arguments);
+      return window.open.apply(window, arguments);
     } else if (!oldIE) {
       return iframeOpen(strUrl, strWindowName, strWindowFeatures);
     } else {
       // Replace child.opener for old IE to avoid appendChild errors
       // We do it for all to avoid having to sniff for specific versions
-      child = open.apply(window, arguments);
+      child = window.open.apply(window, arguments);
       child.opener = null;
       return child;
     }
