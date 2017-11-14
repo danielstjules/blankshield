@@ -1,5 +1,13 @@
 ;(function(root) {
   'use strict';
+
+  /**
+   * Maybe the original window.open function if blankshield.patch is called.
+   *
+   * @var {function}
+   */
+  var maybeOriginalWindowOpen;
+
   /**
    * blankshield is the main function exported by the library. It accepts an
    * anchor element or array of elements, adding an event listener to each to
@@ -35,25 +43,28 @@
   blankshield.open = function(strUrl, strWindowName, strWindowFeatures) {
     // detect IE versions older than 11
     var oldIE = navigator.userAgent.indexOf('MSIE') !== -1;
+    // if window.open() has been monkey patched use the original function
+    var open = maybeOriginalWindowOpen || window.open;
     var child;
 
     if (safeTarget(strWindowName)) {
-      return window.open.apply(window, arguments);
+      return open.apply(window, arguments);
     } else if (!oldIE) {
       return iframeOpen(strUrl, strWindowName, strWindowFeatures);
     } else {
       // Replace child.opener for old IE to avoid appendChild errors
       // We do it for all to avoid having to sniff for specific versions
-      child = window.open.apply(window, arguments);
+      child = open.apply(window, arguments);
       child.opener = null;
       return child;
     }
   };
 
   /**
-   * Patches window.open() to use blankshield.open() for new window/tab targets.
+   * Monkey patch window.open() to use blankshield.open() for new window/tab targets.
    */
   blankshield.patch = function() {
+    maybeOriginalWindowOpen = window.open;
     window.open = function() {
       return blankshield.open.apply(this, arguments);
     };
