@@ -64,6 +64,8 @@
    * Monkey patch window.open() to use blankshield.open() for new window/tab targets.
    */
   blankshield.patch = function() {
+    if (maybeOriginalWindowOpen) return;
+
     maybeOriginalWindowOpen = window.open;
     window.open = function() {
       return blankshield.open.apply(this, arguments);
