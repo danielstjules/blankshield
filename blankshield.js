@@ -6,7 +6,7 @@
    *
    * @var {boolean}
    */
-  var oldIE = navigator.userAgent.indexOf('MSIE') !== -1;
+  var oldIE = window.navigator.userAgent.indexOf('MSIE') !== -1;
 
   /**
    * Cached window.open function.
