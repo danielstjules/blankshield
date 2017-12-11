@@ -6,14 +6,20 @@
    *
    * @var {boolean}
    */
-  var oldIE = window.navigator.userAgent.indexOf('MSIE') !== -1;
+  var oldIE;
+  if (typeof window !== 'undefined') {
+    oldIE = window.navigator.userAgent.indexOf('MSIE') !== -1;
+  }
 
   /**
    * Cached window.open function.
    *
    * @var {function}
    */
-  var open = window.open;
+  var open;
+  if (typeof window !== 'undefined') {
+    oldIE = window.navigator.userAgent.indexOf('MSIE') !== -1;
+  }
 
   /**
    * blankshield is the main function exported by the library. It accepts an
