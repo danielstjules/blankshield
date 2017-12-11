@@ -2,18 +2,11 @@
   'use strict';
 
   /**
-   * Detect IE versions older than 11.
-   *
-   * @var {boolean}
-   */
-  var oldIE = navigator.userAgent.indexOf('MSIE') !== -1;
-
-  /**
-   * Cached window.open function.
+   * Maybe the original window.open function if blankshield.patch is called.
    *
    * @var {function}
    */
-  var open = window.open;
+  var maybeOriginalWindowOpen;
 
   /**
    * blankshield is the main function exported by the library. It accepts an
@@ -48,6 +41,10 @@
    * @returns {Window}
    */
   blankshield.open = function(strUrl, strWindowName, strWindowFeatures) {
+    // detect IE versions older than 11
+    var oldIE = navigator.userAgent.indexOf('MSIE') !== -1;
+    // if window.open() has been monkey patched use the original function
+    var open = maybeOriginalWindowOpen || window.open;
     var child;
 
     if (safeTarget(strWindowName)) {
@@ -66,9 +63,12 @@
   };
 
   /**
-   * Patches window.open() to use blankshield.open() for new window/tab targets.
+   * Monkey patch window.open() to use blankshield.open() for new window/tab targets.
    */
   blankshield.patch = function() {
+    if (maybeOriginalWindowOpen) return;
+
+    maybeOriginalWindowOpen = window.open;
     window.open = function() {
       return blankshield.open.apply(this, arguments);
     };
