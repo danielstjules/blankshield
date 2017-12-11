@@ -58,7 +58,9 @@
       // Replace child.opener for old IE to avoid appendChild errors
       // We do it for all to avoid having to sniff for specific versions
       child = open.apply(window, arguments);
-      child.opener = null;
+      if (child) {
+        child.opener = null;
+      }
       return child;
     }
   };
@@ -175,7 +177,7 @@
     script.type = 'text/javascript';
     script.text = 'window.parent = null; window.top = null;' +
       'window.frameElement = null; var child = window.open(' + openArgs + ');' +
-      'child.opener = null';
+      'if (child) { child.opener = null }';
     iframeDoc.body.appendChild(script);
     newWin = iframe.contentWindow.child;
 
