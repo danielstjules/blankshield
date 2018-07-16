@@ -18,7 +18,7 @@
    */
   var open;
   if (typeof window !== 'undefined') {
-    oldIE = window.navigator.userAgent.indexOf('MSIE') !== -1;
+    open = window.open;
   }
 
   /**
