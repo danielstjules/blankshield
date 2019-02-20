@@ -174,6 +174,8 @@
     openArgs = '"' + url + '"';
     if (strWindowName) {
       openArgs += ', "' + strWindowName + '"';
+    } else {
+      openArgs += ', ""';
     }
     if (strWindowFeatures) {
       openArgs += ', "' + strWindowFeatures + '"';
